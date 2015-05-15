@@ -270,6 +270,7 @@ WirelessCommand.prototype.setup = function setup(photon) {
 
 	if(!photon) {
 		if(self.__batch && self.__batch.length > 0) {
+
 			var photon = self.__batch.pop();
 		}
 		else {
