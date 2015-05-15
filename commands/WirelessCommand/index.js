@@ -136,9 +136,9 @@ WirelessCommand.prototype.__networks = function networks(err, dat) {
 		prompt([{
 
 			type: 'confirm',
-			name: 'setupAll',
-			message: 'Multiple Photons detected nearby. Would you like to perform setup on all of them now?',
-			default: false,
+			name: 'setup',
+			message: 'Multiple Photons detected nearby. Would you like to select one to setup now?',
+			default: true,
 
 		}], multipleChoice);
 	}
@@ -178,34 +178,24 @@ WirelessCommand.prototype.__networks = function networks(err, dat) {
 
 	function multipleChoice(ans) {
 
-		if(ans.setupAll) {
+		if(ans.setup) {
 
-			self.__batch = detectedDevices;
-			self.setup(null);
-		}
-		else {
+			// Select a Photon to setup
+			return prompt([{
 
-			// Select any/all Photons to setup
-			prompt([{
-
-				type: 'checkbox',
+				type: 'list',
 				name: 'selected',
-				message: 'Please select which Photons you would like to setup at this time.',
+				message: 'Please select which Photon you would like to setup at this time.',
 				choices: detectedDevices
 
-			}], multipleAnswers);
+			}], multipleAnswer);
 		}
+		console.log(arrow, 'OK, bye!', chalk.magenta('<3'));
 	};
 
-	function multipleAnswers(ans) {
+	function multipleAnswer(ans) {
 
-		if(ans.selected.length > 1) {
-
-			self.__batch = ans.selected;
-			return self.setup(null);
-		}
-		self.__batch = undefined;
-		self.setup(ans.selected[0]);
+		self.setup(ans.selected);
 	};
 
 	function singleChoice(ans) {
